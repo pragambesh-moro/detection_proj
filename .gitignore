@@ -1,0 +1,15 @@
+# Virtual Environment
+obj_detection_env
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# Large Model Files (especially if downloaded automatically)
+*.pt                  # Matches yolov8n.pt, yolov8s.pt, etc.
+*.onnx                # If you export to ONNX
+
+# Logs and temporary files
+*.log
+.DS_Store             # macOS specific
+.vscode/              # VS Code settings (optional, if you want to keep them local)
