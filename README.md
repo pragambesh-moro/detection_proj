@@ -1,314 +1,209 @@
-# 🔍 Detection Project
+# 🎥 Real-Time Object Detection
 
 <div align="center">
 
-![Detection Banner](https://img.shields.io/badge/Computer_Vision-Detection-blue?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3.8+-green?style=for-the-badge&logo=python)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
+![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-00DFA2?style=flat-square)
+![OpenCV](https://img.shields.io/badge/OpenCV-Latest-red?style=flat-square&logo=opencv)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
 
-**A modern object detection system powered by deep learning**
+**A lightweight real-time object detection system using YOLOv8 and webcam**
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Documentation](#-documentation) • [Contributing](#-contributing)
+Simple • Fast • Efficient
 
 </div>
 
 ---
 
-## 📋 Overview
+## 📖 About
 
-This project implements a state-of-the-art object detection system capable of identifying and localizing objects in images and video streams. Built with modern deep learning frameworks, it provides both accuracy and real-time performance for various detection tasks.
+This is a minimal implementation of real-time object detection using YOLOv8 and OpenCV. The project captures live video from your webcam and detects objects in real-time with bounding boxes and confidence scores.
 
-### Key Highlights
-
-- 🎯 High-accuracy object detection
-- ⚡ Real-time inference capabilities
-- 🔧 Easy-to-use API
-- 📊 Comprehensive evaluation metrics
-- 🎨 Visualization tools included
+Perfect for learning computer vision basics or as a starting point for more complex projects!
 
 ---
 
 ## ✨ Features
 
-- **Multiple Detection Models**: Support for YOLO, Faster R-CNN, and custom architectures
-- **Pre-trained Weights**: Quick start with pre-trained models on common datasets
-- **Custom Training**: Train on your own dataset with minimal configuration
-- **Batch Processing**: Efficient processing of multiple images
-- **Video Detection**: Real-time detection on video streams
-- **Export Options**: Model export for deployment (ONNX, TensorRT)
+- 🎯 Real-time object detection using YOLOv8n (nano model)
+- 📹 Webcam integration with OpenCV
+- 🟢 Green bounding boxes with class labels
+- 💯 Confidence score display (threshold: 0.5)
+- ⌨️ Simple keyboard control (press 'q' to quit)
+- 🚀 Lightweight and fast
 
 ---
 
-## 🚀 Quick Start
-
-### Prerequisites
+## 🛠️ Requirements
 
 ```bash
 Python >= 3.8
-CUDA >= 11.0 (for GPU support)
+ultralytics
+opencv-python
 ```
 
-### Installation
+---
 
+## 📦 Installation
+
+1. **Clone the repository**
 ```bash
-# Clone the repository
 git clone https://github.com/pragambesh-moro/detection_proj.git
 cd detection_proj
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
 ```
 
-### Basic Usage
-
-```python
-from detector import ObjectDetector
-
-# Initialize detector
-detector = ObjectDetector(model='yolov5', weights='pretrained')
-
-# Detect objects in an image
-results = detector.detect('path/to/image.jpg')
-
-# Visualize results
-detector.visualize(results, save_path='output.jpg')
+2. **Install dependencies**
+```bash
+pip install ultralytics opencv-python
 ```
+
+3. **Run the script**
+```bash
+python detection.py
+```
+
+That's it! The YOLOv8n model will be automatically downloaded on first run.
 
 ---
 
-## 📁 Project Structure
+## 🚀 Usage
 
-```
-detection_proj/
-├── data/                  # Dataset directory
-│   ├── train/
-│   ├── val/
-│   └── test/
-├── models/                # Model architectures
-│   ├── yolo.py
-│   ├── faster_rcnn.py
-│   └── custom_model.py
-├── configs/               # Configuration files
-│   └── config.yaml
-├── utils/                 # Utility functions
-│   ├── preprocessing.py
-│   ├── postprocessing.py
-│   └── visualization.py
-├── weights/               # Trained model weights
-├── scripts/               # Training and evaluation scripts
-│   ├── train.py
-│   └── evaluate.py
-├── notebooks/             # Jupyter notebooks for demos
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🎓 Training
-
-### Prepare Your Dataset
-
-Organize your dataset in the following structure:
-
-```
-data/
-├── train/
-│   ├── images/
-│   └── labels/
-└── val/
-    ├── images/
-    └── labels/
-```
-
-### Train the Model
+Simply run the script and point your webcam at objects:
 
 ```bash
-python scripts/train.py \
-    --config configs/config.yaml \
-    --data data/ \
-    --epochs 100 \
-    --batch-size 16
+python detection.py
 ```
 
-### Configuration Options
+**Controls:**
+- Press **'q'** to quit the application
+- The detection window shows real-time results with bounding boxes
 
-Edit `configs/config.yaml` to customize:
-- Model architecture
-- Hyperparameters
-- Data augmentation
-- Training settings
+**What it detects:**
+YOLOv8n can detect 80 different object classes including:
+- People
+- Vehicles (cars, trucks, bikes)
+- Animals (cats, dogs, birds)
+- Common objects (phones, laptops, cups, etc.)
 
 ---
 
-## 📊 Evaluation
+## 📝 How It Works
 
-Run evaluation on the test set:
+The script follows a simple workflow:
 
-```bash
-python scripts/evaluate.py \
-    --weights weights/best.pt \
-    --data data/test/
-```
-
-### Metrics
-
-The evaluation provides:
-- Mean Average Precision (mAP)
-- Precision and Recall curves
-- Confusion matrix
-- Inference time benchmarks
+1. **Initialize Model**: Loads the YOLOv8n (nano) pre-trained model
+2. **Start Webcam**: Opens your default camera (index 0)
+3. **Capture Frames**: Continuously reads frames from the camera
+4. **Detect Objects**: Runs YOLOv8 detection on each frame
+5. **Draw Boxes**: Adds green bounding boxes and labels for objects with >50% confidence
+6. **Display**: Shows the annotated frame in a window
+7. **Loop**: Repeats until you press 'q'
 
 ---
 
-## 🎯 Inference Examples
+## 🔧 Customization
 
-### Single Image Detection
+You can easily modify the script to suit your needs:
 
+### Change Detection Threshold
 ```python
-import cv2
-from detector import ObjectDetector
-
-# Load detector
-detector = ObjectDetector(model='yolov5', weights='weights/best.pt')
-
-# Run detection
-image = cv2.imread('sample.jpg')
-results = detector.detect(image, conf_threshold=0.5)
-
-# Print results
-for obj in results:
-    print(f"Class: {obj['class']}, Confidence: {obj['confidence']:.2f}")
+if confidence > 0.5:  # Change 0.5 to your desired threshold (0.0 to 1.0)
 ```
 
-### Video Stream Detection
-
+### Use Different Camera
 ```python
-import cv2
-from detector import ObjectDetector
-
-detector = ObjectDetector(model='yolov5', weights='weights/best.pt')
-cap = cv2.VideoCapture(0)  # Use webcam
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
-    
-    results = detector.detect(frame, conf_threshold=0.5)
-    annotated_frame = detector.draw_boxes(frame, results)
-    
-    cv2.imshow('Detection', annotated_frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
+cam_cap = cv2.VideoCapture(0)  # Change 0 to 1, 2, etc. for other cameras
 ```
+
+### Change Bounding Box Color
+```python
+cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # (B, G, R) format
+# Example: (0, 0, 255) for red, (255, 0, 0) for blue
+```
+
+### Use a Different YOLOv8 Model
+```python
+model = YOLO('yolov8n.pt')  # Options: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x
+```
+
+Model size comparison:
+- `yolov8n.pt` - Nano (fastest, least accurate)
+- `yolov8s.pt` - Small
+- `yolov8m.pt` - Medium
+- `yolov8l.pt` - Large
+- `yolov8x.pt` - Extra Large (slowest, most accurate)
 
 ---
 
-## 🛠️ Advanced Features
+## 📊 Performance
 
-### Model Export
+**System Requirements:**
+- Webcam or camera device
+- ~6MB for YOLOv8n model
+- Runs smoothly on CPU (GPU optional)
 
-Export trained models for deployment:
-
-```bash
-# Export to ONNX
-python scripts/export.py \
-    --weights weights/best.pt \
-    --format onnx
-
-# Export to TensorRT
-python scripts/export.py \
-    --weights weights/best.pt \
-    --format tensorrt
-```
-
-### Batch Processing
-
-Process multiple images efficiently:
-
-```python
-from detector import BatchDetector
-
-batch_detector = BatchDetector(model='yolov5', weights='weights/best.pt')
-results = batch_detector.detect_batch('path/to/images/', batch_size=8)
-```
+**Expected Performance:**
+- CPU: 10-30 FPS (depending on your processor)
+- GPU: 60+ FPS
 
 ---
 
-## 📈 Performance
+## 🐛 Troubleshooting
 
-| Model | mAP@0.5 | FPS (GPU) | Parameters |
-|-------|---------|-----------|------------|
-| YOLOv5s | 0.87 | 140 | 7.2M |
-| YOLOv5m | 0.91 | 90 | 21.2M |
-| YOLOv5l | 0.94 | 60 | 46.5M |
+### Camera not opening?
+- Check if another application is using the camera
+- Try changing the camera index: `cv2.VideoCapture(1)` or `cv2.VideoCapture(2)`
+- On Linux, you might need permissions to access the camera
 
-*Benchmarked on NVIDIA RTX 3090*
+### Model not downloading?
+- Check your internet connection
+- The model will be saved to your local ultralytics cache after first download
+
+### Low FPS?
+- Try using a smaller input resolution
+- Consider using GPU acceleration with CUDA
+- Use the yolov8n (nano) model for better performance
+
+---
+
+## 📚 Learn More
+
+- [Ultralytics YOLOv8 Documentation](https://docs.ultralytics.com/)
+- [OpenCV Python Tutorial](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
+- [YOLOv8 GitHub Repository](https://github.com/ultralytics/ultralytics)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct.
+Feel free to fork this project and make improvements! Some ideas:
+- Add support for video file input
+- Implement object tracking
+- Save detection results to a file
+- Add a GUI for easier control
+- Support for custom trained models
 
 ---
 
-## 📝 License
+## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- YOLOv5 by Ultralytics
-- PyTorch team for the deep learning framework
-- OpenCV for computer vision utilities
-- The open-source community
+This project is open source and available under the MIT License.
 
 ---
 
-## 📮 Contact
+## 👤 Author
 
 **Pragambesh Moro**
 
 - GitHub: [@pragambesh-moro](https://github.com/pragambesh-moro)
-- Project Link: [https://github.com/pragambesh-moro/detection_proj](https://github.com/pragambesh-moro/detection_proj)
-
----
-
-## 🔄 Changelog
-
-### v1.0.0 (Current)
-- Initial release
-- Support for YOLOv5 models
-- Basic training and inference pipelines
-- Video stream detection
-- Model export functionality
+- Project: [detection_proj](https://github.com/pragambesh-moro/detection_proj)
 
 ---
 
 <div align="center">
 
-**⭐ Star this repo if you find it helpful!**
+**⭐ If you find this helpful, consider giving it a star!**
 
-Made with ❤️ by Pragambesh Moro
+Built with 🎯 YOLOv8 and 💚 OpenCV
 
 </div>
