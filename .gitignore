@@ -1,5 +1,7 @@
 # Virtual Environment
 obj_detection_env
+yolov8n.pt
+yolov8l.pt
 
 # Python compiled files
 __pycache__/
